@@ -15,12 +15,19 @@
             <h2 class="mb-8 text-2xl text-center">Newest jobs</h2>
 
             <div class="space-y-4">
-                <Job />
-                <Job />
-                <Job />
+                <Job v-for="job in jobs" :key="job.id" :job="job" />
             </div>
         </div>
     </div>
 </template>
 
-<script setup></script>
+<script setup>
+const {
+    data: jobs,
+    pending,
+    error,
+    refresh,
+} = await useFetch('/api/v1/jobs', {
+    server: false,
+});
+</script>

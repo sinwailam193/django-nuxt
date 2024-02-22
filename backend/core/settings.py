@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+USER_CREATE_PASSWORD_RETYPE = False 
 
 # Application definition
 
@@ -37,6 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'djoser',
+    'job'
 ]
 
 MIDDLEWARE = [

@@ -11,4 +11,9 @@ export default defineNuxtConfig({
         },
     },
     modules: ['@pinia/nuxt'],
+    routeRules: {
+        '/api/v1/**': {
+            proxy: 'http://localhost:4000/api/v1/**',
+        },
+    },
 });
