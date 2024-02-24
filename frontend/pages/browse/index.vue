@@ -14,19 +14,43 @@
             <hr class="my-6 opacity-30" />
             <h3 class="mt-6 text-xl text-white">Categories</h3>
             <div class="mt-6 space-y-4">
-                <p class="py-4 px-6 text-white rounded-xl">Category 1</p>
-                <p class="py-4 px-6 text-white rounded-xl">Category 2</p>
-                <p class="py-4 px-6 text-white rounded-xl">Category 3</p>
+                <p
+                    :key="category.id"
+                    v-for="category in categories"
+                    @click="(event) => toggleCategory(category.id)"
+                    class="py-4 px-6 text-white rounded-xl"
+                >
+                    {{ category.title }}
+                </p>
             </div>
         </div>
         <div class="md:col-span-3">
             <div class="space-y-4">
+                <!-- <Job />
                 <Job />
-                <Job />
-                <Job />
+                <Job /> -->
             </div>
         </div>
     </div>
 </template>
 
-<script setup></script>
+<script setup>
+const { data: categories } = await useFetch('/api/v1/categories', {
+    server: false,
+});
+
+const selectedCategory = ref('');
+const selectedCategories = {};
+
+function toggleCategory(id) {
+    const idSelected = selectedCategories[id];
+
+    if (!idSelected) {
+        selectedCategories[id] = true;
+    } else {
+        delete selectedCategories[id];
+    }
+
+    selectedCategory.value = Object.keys(selectedCategories).join(',');
+}
+</script>
