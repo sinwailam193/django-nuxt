@@ -16,6 +16,19 @@ class NewestJobView(APIView):
         
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+class BrowseJobsView(APIView):
+    def get(self, request, *args, **kwargs):
+        jobs = Job.objects.all()
+        categories = request.GET.get('categories', '')
+        query = request.GET.get('query', ' ')
+        if query:
+            jobs = jobs.filter(title__icontains=query)
+        if categories:
+            jobs = jobs.filter(category_id__in=categories.split(','))
+        serializer = JobSerializer(jobs, many=True)
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 # Can use RetrieveAPIView to fetch individual one
 # class JobsDetailView(generics.RetrieveAPIView):
 #     queryset = Job.objects.all()

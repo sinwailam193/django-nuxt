@@ -7,7 +7,7 @@ class Category(models.Model):
     list_display = ["title"]
     
     class Meta:
-        ordering = ('title',)
+        ordering = ('-id',)
         verbose_name_plural = "categories"
 
 class Job(models.Model):
