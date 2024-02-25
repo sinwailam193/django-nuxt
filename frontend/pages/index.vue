@@ -29,5 +29,6 @@ const {
     refresh,
 } = await useFetch('/api/v1/jobs', {
     server: false,
+    lazy: true,
 });
 </script>
