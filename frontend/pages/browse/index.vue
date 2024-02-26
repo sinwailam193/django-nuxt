@@ -47,7 +47,7 @@ function performSearch() {
     queryRef.value = query.value;
 }
 
-const { data: categories } = await useFetch('/api/v1/categories', {
+const { data: categories } = await useFetch('/api/v1/categories/', {
     lazy: true,
     server: false,
 });
@@ -68,7 +68,7 @@ function toggleCategory(id) {
 }
 
 // it will only retrigger useFetch if using ref
-const { data: jobs } = await useFetch('/api/v1/jobs/all', {
+const { data: jobs } = await useFetch('/api/v1/jobs/all/', {
     lazy: true,
     server: false,
     query: {

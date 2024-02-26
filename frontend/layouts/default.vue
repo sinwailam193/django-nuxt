@@ -36,12 +36,13 @@
                     >
                         Create job
                     </NuxtLink>
-                    <NuxtLink
-                        to="/logout"
+                    <a
+                        href="#"
+                        @click.prevent="handleLogout"
                         class="py-4 px-6 bg-rose-600 hover:bg-rose-700 text-white rounded-xl"
                     >
                         Log out
-                    </NuxtLink>
+                    </a>
                 </template>
                 <template v-else>
                     <NuxtLink
@@ -63,7 +64,11 @@
 </template>
 
 <script setup>
-import { useUserStore } from '@/stores/user';
-
+const router = useRouter();
 const userStore = useUserStore();
+
+function handleLogout() {
+    userStore.removeToken();
+    router.push({ path: '/' });
+}
 </script>

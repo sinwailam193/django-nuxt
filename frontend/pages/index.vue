@@ -27,7 +27,7 @@ const {
     pending,
     error,
     refresh,
-} = await useFetch('/api/v1/jobs', {
+} = await useFetch('/api/v1/jobs/', {
     server: false,
     lazy: true,
 });

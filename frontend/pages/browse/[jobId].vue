@@ -33,7 +33,10 @@
 <script setup>
 const route = useRoute();
 
-const { data: job } = await useLazyFetch(`/api/v1/jobs/${route.params.jobId}`, {
-    server: false,
-});
+const { data: job } = await useLazyFetch(
+    `/api/v1/jobs/${route.params.jobId}/`,
+    {
+        server: false,
+    }
+);
 </script>

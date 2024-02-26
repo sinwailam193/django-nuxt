@@ -15,12 +15,22 @@ class NewestJobView(APIView):
         serializer = JobSerializer(jobs, many=True)
         
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class MyJobView(APIView):
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get(self, request):
+        jobs = Job.objects.filter(created_by=request.user)
+        serializer = JobSerializer(jobs, many=True)
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class BrowseJobsView(APIView):
     def get(self, request, *args, **kwargs):
         jobs = Job.objects.all()
         categories = request.GET.get('categories', '')
-        query = request.GET.get('query', ' ')
+        query = request.GET.get('query', '')
         if query:
             jobs = jobs.filter(title__icontains=query)
         if categories:

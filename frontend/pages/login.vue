@@ -2,19 +2,32 @@
     <div class="py-10 px-6">
         <div class="max-w-sm mx-auto py-10 px-6 bg-gray-100 rounded-xl">
             <h1 class="mb-6 text-2xl">Log in</h1>
-            <form>
+            <form @submit.prevent="handleLogin">
                 <input
-                    type="email"
                     placeholder="Your email"
                     class="w-full mb-4 py-4 px-6 rounded-xl"
+                    v-model="email"
                 />
                 <input
                     type="password"
                     placeholder="Your password"
                     class="w-full mb-4 py-4 px-6 rounded-xl"
+                    v-model="password"
                 />
 
-                <button class="py-4 px-6 bg-teal-700 text-white rounded-xl">
+                <div
+                    v-if="errors.length"
+                    class="mb-6 py-4 px-6 bg-rose-400 text-white rounded-xl"
+                >
+                    <p v-for="(err, i) in errors" :key="i">
+                        {{ err }}
+                    </p>
+                </div>
+
+                <button
+                    type="submit"
+                    class="py-4 px-6 bg-teal-700 text-white rounded-xl"
+                >
                     Submit
                 </button>
             </form>
@@ -22,4 +35,33 @@
     </div>
 </template>
 
-<script setup></script>
+<script setup>
+const router = useRouter();
+const userStore = useUserStore();
+const email = ref('');
+const password = ref('');
+const errors = ref([]);
+
+async function handleLogin() {
+    errors.value = [];
+    try {
+        const response = await $fetch('/api/v1/token/login/', {
+            method: 'POST',
+            body: {
+                username: email.value,
+                password: password.value,
+            },
+        });
+        userStore.setToken(response.auth_token, email.value);
+        router.push('/');
+    } catch (err) {
+        if (err.response) {
+            for (const key in err.response._data) {
+                errors.value.push(`${key}: ${err.response._data[key]}`);
+            }
+        } else {
+            errors.value.push(SERVER_ERROR);
+        }
+    }
+}
+</script>

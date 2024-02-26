@@ -4,25 +4,20 @@ export const useUserStore = defineStore({
     id: 'user',
     state: () => ({
         user: {
-            isAuthenticated: true,
+            isAuthenticated: false,
             email: null,
             token: null,
         },
     }),
     actions: {
         initStore() {
-            this.user.isAuthenticated = true;
-            console.log(123);
             if (localStorage.getItem('user.token')) {
                 this.user.token = localStorage.getItem('user.token');
                 this.user.email = localStorage.getItem('user.email');
                 this.user.isAuthenticated = true;
-
-                console.log('Initialized user', this.user);
             }
         },
         setToken(token, email) {
-            console.log('setToken', token, email);
             this.user.token = token;
             this.user.email = email;
             this.user.isAuthenticated = true;
@@ -31,8 +26,8 @@ export const useUserStore = defineStore({
             localStorage.setItem('user.email', email);
         },
         removeToken() {
-            localStorage.setItem('user.token', '');
-            localStorage.setItem('user.email', '');
+            localStorage.removeItem('user.token');
+            localStorage.removeItem('user.email');
             this.user.token = null;
             this.user.email = null;
             this.user.isAuthenticated = false;
