@@ -7,6 +7,20 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ('id', 'title',)
 
+class CreateJobSerializer(serializers.ModelSerializer):
+    class meta:
+        model: Job
+        fields = (
+            'category',
+            'title',
+            'description',
+            'position_salary',
+            'position_location',
+            'company_name',
+            'company_location',
+            'company_email',
+        )
+
 class JobSerializer(serializers.ModelSerializer):
     class Meta:
         model = Job

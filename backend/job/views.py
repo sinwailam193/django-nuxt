@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from .models import Job, Category
-from .serializers import JobSerializer, JobDetailSerializer, CategorySerializer
+from .serializers import JobSerializer, JobDetailSerializer, CategorySerializer, CreateJobSerializer
 
 class CategoriesView(generics.ListAPIView):
     queryset = Category.objects.all()
@@ -50,3 +50,16 @@ class JobsDetailView(APIView):
         serializer = JobDetailSerializer(job)
         return Response(serializer.data, status=status.HTTP_200_OK)
         
+class CreateJobView(APIView):
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        serializer = CreateJobSerializer(request.data)
+        
+        if serializer.is_valid(raise_exception=True):
+            job = serializer.save(commit=False)
+            job.created_by = request.user
+            job.save()
+            
+            return Response(serializer.data, status=status.HTTP_201_CREATED)

@@ -2,7 +2,7 @@
     <div class="py-10 px-6">
         <h1 class="mb-6 text-2xl">Create job</h1>
 
-        <form class="space-y-4">
+        <form class="space-y-4" @submit.prevent="handleSubmit">
             <div>
                 <label>Category</label>
 
@@ -68,11 +68,25 @@
                 />
             </div>
 
-            <button class="py-4 px-6 bg-teal-700 text-white rounded-xl">
+            <button
+                type="submit"
+                class="py-4 px-6 bg-teal-700 text-white rounded-xl"
+            >
                 Submit
             </button>
         </form>
     </div>
 </template>
 
-<script setup></script>
+<script setup>
+const router = useRouter();
+const userStore = useUserStore();
+
+async function handleSubmit() {}
+
+onMounted(() => {
+    if (!userStore.user.isAuthenticated) {
+        router.push({ path: '/login' });
+    }
+});
+</script>
